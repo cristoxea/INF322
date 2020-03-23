@@ -27,7 +27,7 @@ export class HorarioClases extends connect(store)(LitElement) {
       css`
         .scrollable{
         	overflow-y:scroll;
-    		height:650px;
+    		height:370px;
         }
         .sigla {
             width: 8%
@@ -82,7 +82,26 @@ export class HorarioClases extends connect(store)(LitElement) {
         	
         	padding: 5px;
         }
-        
+        .filtros {
+	    	text-align: left;
+	    	padding: 5px;
+	    	margin: 10px;
+  		}
+  		.texto-filtros{
+  			display: block;
+  		}
+  		form{
+  			display:inline-block;
+  		}
+  		button{
+  			border-radius: 8px;
+  			padding: 4px 7px;
+  			margin-top: 5px;
+		  	margin-right: 13px;
+		  	background: #ddd;
+		  	font-size: 13px;
+		  	cursor: pointer;
+		}
       `
     ];
   }
@@ -98,16 +117,13 @@ export class HorarioClases extends connect(store)(LitElement) {
     }
   }
 
-
-
-
   protected render() {
     /* Vamos a trabajar con 'cursos', una copia filtrada de 'this.cursos'. */
     let cursos : ListaCursos = {} as ListaCursos;
     if (this._selectedDepto) { // || mas filtros
         Object.keys(this.cursos).forEach((key:string) => {
             if (this.cursos[key].departamento === this._selectedDepto) { // Y más condiciones.
-                cursos[key] = this.cursos[key];
+                	cursos[key] = this.cursos[key];
             }
         });
     } else {
@@ -124,13 +140,23 @@ export class HorarioClases extends connect(store)(LitElement) {
 
     return html`
     <h2>Listado de Cursos</h2>
+    <div class="filtros">
+    <strong class="texto-filtros">Filtros</strong>
     <!-- Selector de departamento para hacer el filtro -->
-    <select id="dpto-select" class="selector" style="background-color:#ffae19;" @change="${this._onDepartamentoChange}">
+    Por departamento:
+    <select id="dpto-select" class="selector" @change="${this._onDepartamentoChange}">
         <option selected value="">Todos los departamentos</option>
         ${Array.from(dptos).map(d => html`
         <option value="${d}">${d}</option>
         `)}
     </select>
+
+    Por asignatura:
+      		<input type="text" id="search" name="search">
+      		<button><b><i>Buscar</i></b></button>
+
+    </div>
+    
 
        <div class="scrollable">
 	    <table>
@@ -150,77 +176,77 @@ export class HorarioClases extends connect(store)(LitElement) {
 	      <tbody>
             ${Object.keys(cursos).map((key) => {
                 const item = cursos[key];
-                return html`
-                    ${Object.keys(item.paralelos).map((idies) => {
-                    // @ts-ignore
-                    const item2 = item.paralelos[idies];
-                    if(idies == '0'){
-                        return html`
-                      <tr >
-                      <td class="centrado unparalelo">
-                        <strong>${item.sigla}</strong>
-                      </td>
-                      <td  colspan="2" class=" unparalelo">
-                        ${item.asignatura}
-                      </td>
-                      <td  colspan="2" class="centrado unparalelo">
-                        ${item.departamento}
-                      </td>
-                      </tr>
-                      
-                      
-                      <tr>
-                      <td class="centrado">
-                        Paralelo
-                      </td>
-                      <td class="centrado">
-                        ${item2.id}
-                      </td> 
-                      
-                      <td>
-                        ${item2.profesor}
-                      </td> 
-                      
-                      <td class="centrado">
-                        <img src="../../images/programacionyhorarios.gif" alt="Horario">
-                      </td> 
-                      
-                      <td class="centrado">
-                        <img src="../../images/arroba.png" alt="Correo">
-                      </td> 
-                      
-                      </tr>
-                      `;
-                    } else {
-                        return html`
-                      <tr>
-                      
-                      <td>
-                      </td>
-                      
-                     
-                      <td class="centrado">
-                        ${item2.id}
-                      </td> 
-                      
-                      <td>
-                        ${item2.profesor}
-                      </td> 
-                      
-                      <td class="centrado">
-                        <img src="../../images/programacionyhorarios.gif" alt="Horario">
-                      </td> 
-                      
-                      <td class="centrado">
-                        <img src="../../images/arroba.png" alt="Correo">
-                      </td> 
-                      
-                    </tr>
-                      `;
-                    }
-        
-                })}
-                    `;
+	                return html`
+	                    ${Object.keys(item.paralelos).map((idies) => {
+	                    // @ts-ignore
+	                    const item2 = item.paralelos[idies];
+	                    if(idies == '0'){
+	                        return html`
+	                      <tr >
+	                      <td class="centrado unparalelo">
+	                        <strong>${item.sigla}</strong>
+	                      </td>
+	                      <td  colspan="2" class=" unparalelo">
+	                        ${item.asignatura}
+	                      </td>
+	                      <td  colspan="2" class="centrado unparalelo">
+	                        ${item.departamento}
+	                      </td>
+	                      </tr>
+	                      
+	                      
+	                      <tr>
+	                      <td class="centrado">
+	                        Paralelo
+	                      </td>
+	                      <td class="centrado">
+	                        ${item2.id}
+	                      </td> 
+	                      
+	                      <td>
+	                        ${item2.profesor}
+	                      </td> 
+	                      
+	                      <td class="centrado">
+	                        <img src="../../images/programacionyhorarios.gif" alt="Horario">
+	                      </td> 
+	                      
+	                      <td class="centrado">
+	                        <img src="../../images/arroba.png" alt="Correo">
+	                      </td> 
+	                      
+	                      </tr>
+	                      `;
+	                    } else {
+	                        return html`
+	                      <tr>
+	                      
+	                      <td>
+	                      </td>
+	                      
+	                     
+	                      <td class="centrado">
+	                        ${item2.id}
+	                      </td> 
+	                      
+	                      <td>
+	                        ${item2.profesor}
+	                      </td> 
+	                      
+	                      <td class="centrado">
+	                        <img src="../../images/programacionyhorarios.gif" alt="Horario">
+	                      </td> 
+	                      
+	                      <td class="centrado">
+	                        <img src="../../images/arroba.png" alt="Correo">
+	                      </td> 
+	                      
+	                    </tr>
+	                      `;
+	                    }
+	        
+	                })}
+	                    `;
             })}
 	      </tbody>
 	      </table>
