@@ -141,7 +141,7 @@ export class MainPage extends connect(store)(LitElement) {
         </div>
            
         <div id="nav-bar"></div>
-           
+         
         <div id="content">
             <!-- ACA está la utilización del componente, para pasarle datos usen un punto '.' más
                  el nombre de la variable del componente (public) -->

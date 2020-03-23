@@ -25,11 +25,9 @@ export class HorarioClases extends connect(store)(LitElement) {
     return [
       ButtonSharedStyles,
       css`
-        :host {
-            display: block;
-            overflow:scroll;
-            height:550px;
-            width:1300px
+        .scrollable{
+        	overflow-y:scroll;
+    		height:650px;
         }
         .sigla {
             width: 8%
@@ -121,101 +119,104 @@ export class HorarioClases extends connect(store)(LitElement) {
         <option value="${d}">${d}</option>
         `)}
     </select>
-    
-    <table>
-      <tbody>
-        <tr>
-          <th class="sigla">
-            <strong> Sigla </strong>
-          </th>
-          <th class="asignatura">
-            <strong> Asignatura </strong>
-          </th>
-          <th class="departamento">
-            <strong> Departamento </strong>
-          </th>
-          <th class="paralelo">
-            <strong> Paralelo </strong>
-          </th>
-          <th class="profesor">
-            <strong> Profesor </strong>
-          </th>
-          <th class="cupos">
-            <strong> Cupos </strong>
-          </th>
-          <th class="horario">
-            <strong> Horario </strong>
-          </th>
-        </tr>
-      ${Object.keys(this.cursos).map((key) => {
-        const item = this.cursos[key];
-        return html`
-        ${Object.keys(item.paralelos).map((idies) => {
-          // @ts-ignore
-          const item2 = item.paralelos[idies];
-          if(idies == '0'){
-            return html`
-          <tr class="unparalelo">
-          <td class="centrado">
-            ${item.sigla}
-          </td>
-          <td>
-            ${item.asignatura}
-          </td>
-          <td>
-            ${item.departamento}
-          </td>
-          <td class="centrado">
-            ${item2.id}
-          </td> 
-          <td>
-            ${item2.profesor}
-          </td> 
-          <td class="centrado">
-            ${item2.cupos}
-          </td> 
-          <td class="centrado">
-          <button @click="${this.handleClick}">
-          Detalles
-          </button>
-          </td> 
-        </tr>
-          `;
-          } else {
-            return html`
-          <tr>
-          <td>
-            
-          </td>
-          <td>
-             
-          </td>
-          <td>
-             
-          </td>
-          <td class="centrado">
-            ${item2.id}
-          </td> 
-          <td>
-            ${item2.profesor}
-          </td> 
-          <td class="centrado">
-            ${item2.cupos}
-          </td> 
-          <td class="centrado">
-          <button @click="${this.handleClick}">
-          Detalles
-          </button>
-          </td> 
-        </tr>
-          `;
-          }
-          
-        })}
-        `;
-      })}
-      </tbody>
-      </table> 
+
+    <div class="scrollable">
+	    <table>
+	      <tbody>
+	        <tr>
+	          <th class="sigla">
+	            <strong> Sigla </strong>
+	          </th>
+	          <th class="asignatura">
+	            <strong> Asignatura </strong>
+	          </th>
+	          <th class="departamento">
+	            <strong> Departamento </strong>
+	          </th>
+	          <th class="paralelo">
+	            <strong> Paralelo </strong>
+	          </th>
+	          <th class="profesor">
+	            <strong> Profesor </strong>
+	          </th>
+	          <th class="cupos">
+	            <strong> Cupos </strong>
+	          </th>
+	          <th class="horario">
+	            <strong> Horario </strong>
+	          </th>
+	        </tr>
+	      
+	      ${Object.keys(this.cursos).map((key) => {
+	        const item = this.cursos[key];
+	        return html`
+	        ${Object.keys(item.paralelos).map((idies) => {
+	          // @ts-ignore
+	          const item2 = item.paralelos[idies];
+	          if(idies == '0'){
+	            return html`
+	          <tr class="unparalelo">
+	          <td class="centrado">
+	            ${item.sigla}
+	          </td>
+	          <td>
+	            ${item.asignatura}
+	          </td>
+	          <td>
+	            ${item.departamento}
+	          </td>
+	          <td class="centrado">
+	            ${item2.id}
+	          </td> 
+	          <td>
+	            ${item2.profesor}
+	          </td> 
+	          <td class="centrado">
+	            ${item2.cupos}
+	          </td> 
+	          <td class="centrado">
+	          <button @click="${this.handleClick}">
+	          Detalles
+	          </button>
+	          </td> 
+	        </tr>
+	          `;
+	          } else {
+	            return html`
+	          <tr>
+	          <td>
+	            
+	          </td>
+	          <td>
+	             
+	          </td>
+	          <td>
+	             
+	          </td>
+	          <td class="centrado">
+	            ${item2.id}
+	          </td> 
+	          <td>
+	            ${item2.profesor}
+	          </td> 
+	          <td class="centrado">
+	            ${item2.cupos}
+	          </td> 
+	          <td class="centrado">
+	          <button @click="${this.handleClick}">
+	          Detalles
+	          </button>
+	          </td> 
+	        </tr>
+	          `;
+	          }
+	          
+	        })}
+	        `;
+	      })}
+	      </tbody>
+	      </table>
+	    </div>
     `;
   
   };
