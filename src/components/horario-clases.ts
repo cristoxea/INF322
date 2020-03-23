@@ -34,11 +34,11 @@ export class HorarioClases extends connect(store)(LitElement) {
         }
         
         .asignatura{
-            width: 34%
+            width: 50%
         }
         
         .departamento{
-            width: 14%
+            width: 40%
         }
         
         .paralelo{
@@ -74,12 +74,15 @@ export class HorarioClases extends connect(store)(LitElement) {
         }
         .unparalelo{
         	border-top: 1px solid black;
+        	border-bottom: 1px solid black;
+        	border-right: 1px solid black;
+        	background-color:#ebebeb
         }
         td{
-        	border-right: 1px solid black;
+        	
         	padding: 5px;
         }
-        tr:hover {background-color:#f5f5f5;}
+        
       `
     ];
   }
@@ -91,8 +94,13 @@ export class HorarioClases extends connect(store)(LitElement) {
     console.log(selector);
     if (selector) {
         this._selectedDepto = selector.value;
+        console.log(this._selectedDepto);
     }
   }
+
+
+
+
   protected render() {
     /* Vamos a trabajar con 'cursos', una copia filtrada de 'this.cursos'. */
     let cursos : ListaCursos = {} as ListaCursos;
@@ -110,6 +118,10 @@ export class HorarioClases extends connect(store)(LitElement) {
     Object.values(this.cursos).forEach((curso:any) => {
         dptos.add(curso.departamento);
     });
+
+
+
+
     return html`
     <h2>Listado de Cursos</h2>
     <!-- Selector de departamento para hacer el filtro -->
@@ -120,103 +132,100 @@ export class HorarioClases extends connect(store)(LitElement) {
         `)}
     </select>
 
-    <div class="scrollable">
+       <div class="scrollable">
 	    <table>
+	        <thead>
+                <tr>
+                  <th class="sigla">
+                    <strong> Sigla </strong>
+                  </th>
+                  <th colspan="2" class="asignatura">
+                    <strong> Asignatura </strong>
+                  </th>
+                  <th colspan="2" class="departamento">
+                    <strong> Departamento </strong>
+                  </th>
+                </tr>
+            </thead>
 	      <tbody>
-	        <tr>
-	          <th class="sigla">
-	            <strong> Sigla </strong>
-	          </th>
-	          <th class="asignatura">
-	            <strong> Asignatura </strong>
-	          </th>
-	          <th class="departamento">
-	            <strong> Departamento </strong>
-	          </th>
-	          <th class="paralelo">
-	            <strong> Paralelo </strong>
-	          </th>
-	          <th class="profesor">
-	            <strong> Profesor </strong>
-	          </th>
-	          <th class="cupos">
-	            <strong> Cupos </strong>
-	          </th>
-	          <th class="horario">
-	            <strong> Horario </strong>
-	          </th>
-	        </tr>
-	      
-	      ${Object.keys(this.cursos).map((key) => {
-	        const item = this.cursos[key];
-	        return html`
-	        ${Object.keys(item.paralelos).map((idies) => {
-	          // @ts-ignore
-	          const item2 = item.paralelos[idies];
-	          if(idies == '0'){
-	            return html`
-	          <tr class="unparalelo">
-	          <td class="centrado">
-	            ${item.sigla}
-	          </td>
-	          <td>
-	            ${item.asignatura}
-	          </td>
-	          <td>
-	            ${item.departamento}
-	          </td>
-	          <td class="centrado">
-	            ${item2.id}
-	          </td> 
-	          <td>
-	            ${item2.profesor}
-	          </td> 
-	          <td class="centrado">
-	            ${item2.cupos}
-	          </td> 
-	          <td class="centrado">
-	          <button @click="${this.handleClick}">
-	          Detalles
-	          </button>
-	          </td> 
-	        </tr>
-	          `;
-	          } else {
-	            return html`
-	          <tr>
-	          <td>
-	            
-	          </td>
-	          <td>
-	             
-	          </td>
-	          <td>
-	             
-	          </td>
-	          <td class="centrado">
-	            ${item2.id}
-	          </td> 
-	          <td>
-	            ${item2.profesor}
-	          </td> 
-	          <td class="centrado">
-	            ${item2.cupos}
-	          </td> 
-	          <td class="centrado">
-	          <button @click="${this.handleClick}">
-	          Detalles
-	          </button>
-	          </td> 
-	        </tr>
-	          `;
-	          }
-	          
-	        })}
-	        `;
-	      })}
+            ${Object.keys(this.cursos).map((key) => {
+                const item = this.cursos[key];
+                return html`
+                    ${Object.keys(item.paralelos).map((idies) => {
+                    // @ts-ignore
+                    const item2 = item.paralelos[idies];
+                    if(idies == '0'){
+                        return html`
+                      <tr >
+                      <td class="centrado unparalelo">
+                        <strong>${item.sigla}</strong>
+                      </td>
+                      <td  colspan="2" class=" unparalelo">
+                        ${item.asignatura}
+                      </td>
+                      <td  colspan="2" class="centrado unparalelo">
+                        ${item.departamento}
+                      </td>
+                      </tr>
+                      
+                      
+                      <tr>
+                      <td class="centrado">
+                        Paralelo
+                      </td>
+                      <td class="centrado">
+                        ${item2.id}
+                      </td> 
+                      
+                      <td>
+                        ${item2.profesor}
+                      </td> 
+                      
+                      <td class="centrado">
+                        <img src="../../images/programacionyhorarios.gif" alt="Horario">
+                      </td> 
+                      
+                      <td class="centrado">
+                        <img src="../../images/arroba.png" alt="Correo">
+                      </td> 
+                      
+                      </tr>
+                      `;
+                    } else {
+                        return html`
+                      <tr>
+                      
+                      <td>
+                      </td>
+                      
+                     
+                      <td class="centrado">
+                        ${item2.id}
+                      </td> 
+                      
+                      <td>
+                        ${item2.profesor}
+                      </td> 
+                      
+                      <td class="centrado">
+                        <img src="../../images/programacionyhorarios.gif" alt="Horario">
+                      </td> 
+                      
+                      <td class="centrado">
+                        <img src="../../images/arroba.png" alt="Correo">
+                      </td> 
+                      
+                    </tr>
+                      `;
+                    }
+        
+                })}
+                    `;
+            })}
 	      </tbody>
 	      </table>
 	    </div>
+	    
     `;
   
   };
