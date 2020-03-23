@@ -1,6 +1,6 @@
 ramos = open("PARSEAR.py", "r")
 prejson = dict()
-actualramo = ""
+problemas = ["direccion de estudio","ingeniería química y ambiental", "obras civiles", "ingeniería comercial", "estudios humanisticos", "ingeniería eléctrica", "ingeniería mecánica", "ingeniería metlúrgica y de materiales", "ingeniería en diseño", "direccion gral. docencia"]
 for i in ramos:
 	i = i.strip().split(" ")
 	listtotal=list()
@@ -76,20 +76,38 @@ deptos = {"IAO MRA ARQ":"ARQUITECTURA", "EFI":"DEFIDER", "BIE CERT PRE REE":"DIR
 "QUI AYQ":"QUIMICA", "ACTPPI":"V.R.A."}
 for i in prejson:
 	flag = 1
-	actualramo = {"id":0, "sigla":0, "asignatura":0, "departamento":0,"paralelos":0 }
+	actualramo = {"id":0, "sigla":0, "asignatura":0, "departamento":0,"paralelos":0, "semestre":1 }
 	actualramo["id"]=a
 	actualramo["sigla"]=i
 	ramo = prejson[i][0]
-	ramo = ramo.split(" ")
-	ramo = list(map(str.capitalize, ramo))
-	ramo = " ".join(ramo)
-	actualramo["asignatura"]=ramo
+	flag2 = 1
+	for k in problemas:
+
+		if k.lower() in ramo.lower():
+			ramo = ramo.lower().replace(k.lower(), "", 1)
+			flag2 = 0
+	if flag2:
+		ramo = " ".join(ramo.split(" ")[0:-1])
+	ramo = ramo.lower().split(" ")
+	for j in range(0,len(ramo)):
+		if len(ramo[j])>1:
+			if ramo[j][0] == ramo[j][1] or ramo[j][1] == ".":
+				ramo[j] = ramo[j].upper()
+			else:
+				ramo[j] = ramo[j].capitalize()
+		else:
+			ramo[j] = ramo[j].capitalize()
+	ramo = (" ".join(ramo)).strip()
+	actualramo["asignatura"] = ramo
 	for j in deptos:
 		if i[0:3] in j:
 			d = deptos[j]
 			d = d.split(" ")
 			d = list(map(str.capitalize, d))
 			d = " ".join(d)
+			if d.lower()== "v.r.a.":
+				d = "V.R.A."
+			d = d.strip()
 			actualramo["departamento"]=d
 			break
 	lista=[]
@@ -102,6 +120,8 @@ for i in prejson:
 		nombreprofe = nombreprofe.split(" ")
 		nombreprofe = list(map(str.capitalize, nombreprofe))
 		nombreprofe = " ".join(nombreprofe)
+		if nombreprofe.lower() == "nn":
+			nombreprofe = "NN"
 		profe = {"id":paralelonum, "profesor":nombreprofe, "cupos":cupos}
 		lista.append(profe)
 	actualramo["paralelos"]=lista
@@ -118,6 +138,5 @@ for i in json:
 		archivo.write(str(i)+',\n')
 	else:
 		archivo.write(str(i)+'\n')
-
 archivo.write("];")
 archivo.close()
