@@ -72,7 +72,7 @@ export class HorarioClases extends connect(store)(LitElement) {
   protected render() {
     return html`
     <h2>Listado de Cursos</h2>
-    <table class="left">
+    <table border="1" class="left">
       <tbody>
         <tr>
           <th class="sigla">
