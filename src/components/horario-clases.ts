@@ -147,8 +147,8 @@ export class HorarioClases extends connect(store)(LitElement) {
 	          </th>
 	        </tr>
 	      
-	      ${Object.keys(this.cursos).map((key) => {
-	        const item = this.cursos[key];
+	      ${Object.keys(cursos).map((key) => {
+	        const item = cursos[key];
 	        return html`
 	        ${Object.keys(item.paralelos).map((idies) => {
 	          // @ts-ignore
@@ -175,7 +175,7 @@ export class HorarioClases extends connect(store)(LitElement) {
 	            ${item2.cupos}
 	          </td> 
 	          <td class="centrado">
-	          <button @click="${this.handleClick}">
+	          <button @click="${() => {console.log(item2)}}">
 	          Detalles
 	          </button>
 	          </td> 
@@ -203,7 +203,7 @@ export class HorarioClases extends connect(store)(LitElement) {
 	            ${item2.cupos}
 	          </td> 
 	          <td class="centrado">
-	          <button @click="${this.handleClick}">
+	          <button @click="${() => {console.log(item2)}}">
 	          Detalles
 	          </button>
 	          </td> 
