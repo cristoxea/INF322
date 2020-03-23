@@ -64,7 +64,7 @@ export class MainPage extends connect(store)(LitElement) {
 
         #main {
           display: grid;
-          height: 200%;
+          height: 100%; 
           grid-template-columns: 300px calc(100% - 300px);
           grid-template-rows: 80px calc(100% - 160px) 80px;
         }
@@ -100,12 +100,14 @@ export class MainPage extends connect(store)(LitElement) {
           background: aqua;
         }
         
-        #footer {
-        grid-column: 1 / 3;
-        background-color: #faba25;
-        align-content: center;
+        
+        #footer{ 
+          position:absolute; 
+          bottom:0; 
+          width:100%; 
+          height:100px; 
+          background-color: #faba25;
         }
-
         .centered {
           display: flex;
           align-items: center;
@@ -122,9 +124,9 @@ export class MainPage extends connect(store)(LitElement) {
   }
 
   _logIn () {
-    this._loggedIn = (Math.random() > .5);
+    this._loggedIn = 1;
     if (!this._loggedIn) {
-        alert('try again!');
+        alert('Esto nunca pasara ahora!');
     }
   }
 
@@ -137,7 +139,7 @@ export class MainPage extends connect(store)(LitElement) {
     ${this._loggedIn ? html`
     <div id="main">
         <div id="header" style="vertical-align: middle;">
-            Sesión de ALUMNO NOMBRE APELLIDO
+            Sesión de CORONAINPHASETWO
         </div>
            
         <div id="nav-bar"></div>
