@@ -32,23 +32,23 @@ export class HorarioClases extends connect(store)(LitElement) {
             width:1300px
         }
         .sigla {
-            width: 10% 
+            width: 8%
         }
         
         .asignatura{
-            width: 25%
+            width: 34%
         }
         
         .departamento{
-            width: 13%
+            width: 14%
         }
         
         .paralelo{
-            width: 22%
+            width: 6%
         }
         
         .profesor{
-            width: 15%
+            width: 23%
         }
         
         .cupos{
@@ -59,9 +59,29 @@ export class HorarioClases extends connect(store)(LitElement) {
             width: 10%
         }
         
-        .left{
+        table{
+  			border-collapse: collapse;
+		}
+		th{
+			border: 1px solid black;
+			background-color: #3f51b5;
+  			color: white;
+		}
+		th, .centrado{
+			text-align: center;
+		}
+        table{
             text-align: left;
+            border: 1px solid black;
         }
+        .unparalelo{
+        	border-top: 1px solid black;
+        }
+        td{
+        	border-right: 1px solid black;
+        	padding: 5px;
+        }
+        tr:hover {background-color:#f5f5f5;}
       `
     ];
   }
@@ -102,7 +122,7 @@ export class HorarioClases extends connect(store)(LitElement) {
         `)}
     </select>
     
-    <table border="1px" class="left">
+    <table>
       <tbody>
         <tr>
           <th class="sigla">
@@ -127,16 +147,16 @@ export class HorarioClases extends connect(store)(LitElement) {
             <strong> Horario </strong>
           </th>
         </tr>
-      ${Object.keys(cursos).map((key) => {
-        const item = cursos[key];
+      ${Object.keys(this.cursos).map((key) => {
+        const item = this.cursos[key];
         return html`
         ${Object.keys(item.paralelos).map((idies) => {
           // @ts-ignore
           const item2 = item.paralelos[idies];
           if(idies == '0'){
             return html`
-          <tr>
-          <td>
+          <tr class="unparalelo">
+          <td class="centrado">
             ${item.sigla}
           </td>
           <td>
@@ -145,17 +165,17 @@ export class HorarioClases extends connect(store)(LitElement) {
           <td>
             ${item.departamento}
           </td>
-          <td>
+          <td class="centrado">
             ${item2.id}
           </td> 
           <td>
             ${item2.profesor}
           </td> 
-          <td>
+          <td class="centrado">
             ${item2.cupos}
           </td> 
-          <td>
-          <button @click="${() => {console.log(item2)}}">
+          <td class="centrado">
+          <button @click="${this.handleClick}">
           Detalles
           </button>
           </td> 
@@ -173,17 +193,17 @@ export class HorarioClases extends connect(store)(LitElement) {
           <td>
              
           </td>
-          <td>
+          <td class="centrado">
             ${item2.id}
           </td> 
           <td>
             ${item2.profesor}
           </td> 
-          <td>
+          <td class="centrado">
             ${item2.cupos}
           </td> 
-          <td>
-          <button @click="${() => {console.log(item2)}}">
+          <td class="centrado">
+          <button @click="${this.handleClick}">
           Detalles
           </button>
           </td> 
