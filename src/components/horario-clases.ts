@@ -18,11 +18,9 @@ import { ListaCursos } from '../reducers/cursos';
 export class HorarioClases extends connect(store)(LitElement) {
   @property({type: Object})
   public cursos: ListaCursos = {};
-@property({type: String})
-  private _selectedDepto: string = "";
-  /* Variable para guardar el depto selecionado */
   @property({type: String})
   private _selectedDepto: string = "";
+  /* Variable para guardar el depto selecionado */
   static get styles() {
     return [
       ButtonSharedStyles,
@@ -76,14 +74,14 @@ export class HorarioClases extends connect(store)(LitElement) {
     if (selector) {
         this._selectedDepto = selector.value;
     }
-
+  }
   protected render() {
     /* Vamos a trabajar con 'cursos', una copia filtrada de 'this.cursos'. */
     let cursos : ListaCursos = {} as ListaCursos;
     if (this._selectedDepto) { // || mas filtros
         Object.keys(this.cursos).forEach((key:string) => {
             if (this.cursos[key].departamento === this._selectedDepto) { // Y más condiciones.
-                cursos[key] = this.cursos[key]
+                cursos[key] = this.cursos[key];
             }
         });
     } else {
@@ -200,5 +198,5 @@ export class HorarioClases extends connect(store)(LitElement) {
       </table> 
     `;
   
-  }
+  };
 }
