@@ -18,7 +18,11 @@ import { ListaCursos } from '../reducers/cursos';
 export class HorarioClases extends connect(store)(LitElement) {
   @property({type: Object})
   public cursos: ListaCursos = {};
-
+@property({type: String})
+  private _selectedDepto: string = "";
+  /* Variable para guardar el depto selecionado */
+  @property({type: String})
+  private _selectedDepto: string = "";
   static get styles() {
     return [
       ButtonSharedStyles,
@@ -65,14 +69,42 @@ export class HorarioClases extends connect(store)(LitElement) {
   }
   
 
-  handleClick() {
-    console.log(this.cursos);
-  }
+  /*Esto ocurre cuando el selector cambia, entonces se cambia this._selectedDepto que efectua el filtro. */
+  private _onDepartamentoChange () {
+    let selector = this.shadowRoot!.getElementById('dpto-select') as HTMLInputElement;
+    console.log(selector);
+    if (selector) {
+        this._selectedDepto = selector.value;
+    }
 
   protected render() {
+    /* Vamos a trabajar con 'cursos', una copia filtrada de 'this.cursos'. */
+    let cursos : ListaCursos = {} as ListaCursos;
+    if (this._selectedDepto) { // || mas filtros
+        Object.keys(this.cursos).forEach((key:string) => {
+            if (this.cursos[key].departamento === this._selectedDepto) { // Y más condiciones.
+                cursos[key] = this.cursos[key]
+            }
+        });
+    } else {
+        cursos = this.cursos;
+    }
+
+    let dptos = new Set(); // Un Set para guardar los departamentos.
+    Object.values(this.cursos).forEach((curso:any) => {
+        dptos.add(curso.departamento);
+    });
     return html`
     <h2>Listado de Cursos</h2>
-    <table border="1" class="left">
+    <!-- Selector de departamento para hacer el filtro -->
+    <select id="dpto-select" class="selector" style="background-color:#ffae19;" @change="${this._onDepartamentoChange}">
+        <option selected value="">Todos los departamentos</option>
+        ${Array.from(dptos).map(d => html`
+        <option value="${d}">${d}</option>
+        `)}
+    </select>
+    
+    <table border="1px" class="left">
       <tbody>
         <tr>
           <th class="sigla">
@@ -97,8 +129,8 @@ export class HorarioClases extends connect(store)(LitElement) {
             <strong> Horario </strong>
           </th>
         </tr>
-      ${Object.keys(this.cursos).map((key) => {
-        const item = this.cursos[key];
+      ${Object.keys(cursos).map((key) => {
+        const item = cursos[key];
         return html`
         ${Object.keys(item.paralelos).map((idies) => {
           // @ts-ignore
@@ -125,7 +157,7 @@ export class HorarioClases extends connect(store)(LitElement) {
             ${item2.cupos}
           </td> 
           <td>
-          <button @click="${this.handleClick}">
+          <button @click="${() => {console.log(item2)}}">
           Detalles
           </button>
           </td> 
@@ -153,7 +185,7 @@ export class HorarioClases extends connect(store)(LitElement) {
             ${item2.cupos}
           </td> 
           <td>
-          <button @click="${this.handleClick}">
+          <button @click="${() => {console.log(item2)}}">
           Detalles
           </button>
           </td> 
