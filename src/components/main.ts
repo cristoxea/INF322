@@ -64,7 +64,7 @@ export class MainPage extends connect(store)(LitElement) {
 
         #main {
           display: grid;
-          height: 100%;
+          height: 200%;
           grid-template-columns: 300px calc(100% - 300px);
           grid-template-rows: 80px calc(100% - 160px) 80px;
         }

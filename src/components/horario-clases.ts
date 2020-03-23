@@ -25,8 +25,10 @@ export class HorarioClases extends connect(store)(LitElement) {
       css`
         :host {
             display: block;
+            overflow:scroll;
+            height:550px;
+            width:1300px
         }
-
         .sigla {
             width: 10% 
         }
