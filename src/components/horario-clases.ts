@@ -20,6 +20,10 @@ export class HorarioClases extends connect(store)(LitElement) {
   public cursos: ListaCursos = {};
   @property({type: String})
   private _selectedDepto: string = "";
+  @property({type: String})
+  private _selectedProfe: string = "";
+  @property({type: String})
+  private _selectedAsignatura: string = "";
   /* Variable para guardar el depto selecionado */
   static get styles() {
     return [
@@ -109,13 +113,32 @@ export class HorarioClases extends connect(store)(LitElement) {
 
   /*Esto ocurre cuando el selector cambia, entonces se cambia this._selectedDepto que efectua el filtro. */
   private _onDepartamentoChange () {
-    let selector = this.shadowRoot!.getElementById('dpto-select') as HTMLInputElement;
-    console.log(selector);
-    if (selector) {
-        this._selectedDepto = selector.value;
+    let selector1 = this.shadowRoot!.getElementById('dpto-select') as HTMLInputElement;
+    console.log(selector1);
+    if (selector1) {
+        this._selectedDepto = selector1.value;
         console.log(this._selectedDepto);
     }
   }
+
+  private _onProfesorChange () {
+    let selector2 = this.shadowRoot!.getElementById('profe-select') as HTMLInputElement;
+    console.log(selector2);
+    if (selector2) {
+        this._selectedProfe = selector2.value;
+        console.log(this._selectedProfe);
+    }
+  }
+
+  private _onAsignaturaChange () {
+    let selector3 = this.shadowRoot!.getElementById('asignatura-select') as HTMLInputElement;
+    console.log(selector3);
+    if (selector3) {
+        this._selectedAsignatura = selector3.value;
+        console.log(this._selectedAsignatura);
+    }
+  }
+
 
   protected render() {
     /* Vamos a trabajar con 'cursos', una copia filtrada de 'this.cursos'. */
@@ -135,6 +158,22 @@ export class HorarioClases extends connect(store)(LitElement) {
         dptos.add(curso.departamento);
     });
 
+    /* Vamos a trabajar con 'cursos_profes', una copia filtrada de 'cursos'. */
+    let cursos_profes : ListaCursos = {} as ListaCursos;
+    if (this._selectedProfe) { // || mas filtros
+        Object.keys(cursos).forEach((key:string) => {
+            if (cursos[key].departamento === this._selectedProfe) { // Y más condiciones.
+                	cursos_profes[key] = cursos[key];
+            }
+        });
+    } else {
+        cursos_profes = cursos;
+    }
+
+    let profes = new Set(); // Un Set para guardar los departamentos.
+    Object.values(cursos).forEach((curso_profe:any) => {
+        profes.add(curso_profe.departamento);
+    });
 
 
 
@@ -144,17 +183,23 @@ export class HorarioClases extends connect(store)(LitElement) {
     <strong class="texto-filtros">Filtros</strong>
     <!-- Selector de departamento para hacer el filtro -->
     Por departamento:
-    <select id="dpto-select" class="selector" @change="${this._onDepartamentoChange}">
+    <select id="dpto-select" class="selector1" @change="${this._onDepartamentoChange}">
         <option selected value="">Todos los departamentos</option>
         ${Array.from(dptos).map(d => html`
         <option value="${d}">${d}</option>
         `)}
     </select>
 
-    Por asignatura:
-      		<input type="text" id="search" name="search">
-      		<button><b><i>Buscar</i></b></button>
+    Por profesor:
+    <select id="profe-select" class="selector2" @change="${this._onProfesorChange}">
+        <option selected value="">Elija Profesor</option>
+        ${Array.from(profes).map(d => html`
+        <option value="${d}">${d}</option>
+        `)}
+    </select>
 
+    Por asignatura:
+      		<input id="asignatura-select" @change="${this._onAsignaturaChange}">
     </div>
     
 
@@ -176,6 +221,7 @@ export class HorarioClases extends connect(store)(LitElement) {
 	      <tbody>
             ${Object.keys(cursos).map((key) => {
                 const item = cursos[key];
+                if (item.asignatura.indexOf(this._selectedAsignatura) != -1){
 	                return html`
 	                    ${Object.keys(item.paralelos).map((idies) => {
 	                    // @ts-ignore
@@ -247,6 +293,7 @@ export class HorarioClases extends connect(store)(LitElement) {
 	        
 	                })}
 	                    `;
+	                }
             })}
 	      </tbody>
 	      </table>
