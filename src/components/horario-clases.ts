@@ -31,7 +31,7 @@ export class HorarioClases extends connect(store)(LitElement) {
       css`
         .scrollable{
         	overflow-y:scroll;
-    		height:370px;
+    		height:400px;
         }
         .sigla {
             width: 8%
@@ -180,29 +180,43 @@ export class HorarioClases extends connect(store)(LitElement) {
     });
 
 
-    return html`
-    <h2>Listado de Cursos</h2>
+    // @ts-ignore
+      return html`
+    <div style="display: inline-block;">
+    <strong style="font-size:  30px;" >
+    
+    Listado de Cursos
+    </strong>
+    <img src="../../images/bloc.png"  height="24" width="24" alt="bloc">
+    </div>
+    
+    
     <div class="filtros">
-    <strong class="texto-filtros">Filtros</strong>
-    <!-- Selector de departamento para hacer el filtro -->
-    Por departamento:
-    <select id="dpto-select" class="selector1" @change="${this._onDepartamentoChange}">
-        <option selected value="">Todos los departamentos</option>
-        ${Array.from(dptos).map(d => html`
-        <option value="${d}">${d}</option>
-        `)}
-    </select>
-
-    Por profesor:
-    <select id="profe-select" class="selector2" @change="${this._onProfesorChange}">
-        <option selected value="">Todos los Profesores</option>
-        ${Array.from(profes).sort().map(d => html`
-        <option value="${d}">${d}</option>
-        `)}
-    </select>
-
-    Por asignatura:
-      		<input id="asignatura-select" @change="${this._onAsignaturaChange}">
+        <strong class="texto-filtros">Filtros</strong>
+        <!-- Selector de departamento para hacer el filtro -->
+        <div>
+            Por departamento:
+            <select id="dpto-select" class="selector1" @change="${this._onDepartamentoChange}">
+                <option selected value="">Todos los departamentos</option>
+                ${Array.from(dptos).map(d => html`
+                <option value="${d}">${d}</option>
+                `)}
+            </select>
+        </div>
+        <div>
+            Por profesor:
+            <select id="profe-select" class="selector2" @change="${this._onProfesorChange}">
+                <option selected value="">Todos los Profesores</option>
+                ${Array.from(profes).sort().map(d => html`
+                <option value="${d}">${d}</option>
+                `)}
+            </select>
+        </div>
+        <div>
+    
+            Por asignatura:
+                    <input id="asignatura-select" @change="${this._onAsignaturaChange}">
+        </div>
     </div>
     
 

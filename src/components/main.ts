@@ -124,7 +124,7 @@ export class MainPage extends connect(store)(LitElement) {
   }
 
   _logIn () {
-    this._loggedIn = 1;
+    this._loggedIn = true;
     if (!this._loggedIn) {
         alert('Esto nunca pasara ahora!');
     }
