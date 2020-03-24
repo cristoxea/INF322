@@ -158,22 +158,27 @@ export class HorarioClases extends connect(store)(LitElement) {
         dptos.add(curso.departamento);
     });
 
-    /* Vamos a trabajar con 'cursos_profes', una copia filtrada de 'cursos'. */
-    let cursos_profes : ListaCursos = {} as ListaCursos;
-    if (this._selectedProfe) { // || mas filtros
-        Object.keys(cursos).forEach((key:string) => {
-            if (cursos[key].departamento === this._selectedProfe) { // Y más condiciones.
-                	cursos_profes[key] = cursos[key];
-            }
-        });
-    } else {
-        cursos_profes = cursos;
-    }
+    /*Vamos a trabajar con 'cursos_profes', una copia filtrada de 'cursos'. */
+    let cursos2 : ListaCursos = {} as ListaCursos;
+    if(this._selectedProfe){
+	Object.keys(cursos).forEach((key:string)=> {
+			Object.keys(cursos[key].paralelos).forEach((key2:string)=>{
+					if(cursos[key].paralelos[key2].profesor === this._selectedProfe){
+						cursos2[key] = cursos[key];
+					}
+			});
+	});
+	} else {
+        cursos2 = cursos;
+	}
 
     let profes = new Set(); // Un Set para guardar los departamentos.
-    Object.values(cursos).forEach((curso_profe:any) => {
-        profes.add(curso_profe.departamento);
+    Object.keys(cursos).forEach((key:string) => {
+    	Object.values(cursos2[key].paralelos).forEach((key2:any)=>{
+        	profes.add(key2.profesor);
+    	});
     });
+    profes = Array.from(profes).sort();
 
 
 
@@ -192,9 +197,9 @@ export class HorarioClases extends connect(store)(LitElement) {
 
     Por profesor:
     <select id="profe-select" class="selector2" @change="${this._onProfesorChange}">
-        <option selected value="">Elija Profesor</option>
-        ${Array.from(profes).map(d => html`
-        <option value="${d}">${d}</option>
+        <option selected value="">Todos los Profesores</option>
+        ${Array.from(profes).map(e => html`
+        <option value="${e}">${e}</option>
         `)}
     </select>
 
@@ -219,8 +224,8 @@ export class HorarioClases extends connect(store)(LitElement) {
                 </tr>
             </thead>
 	      <tbody>
-            ${Object.keys(cursos).map((key) => {
-                const item = cursos[key];
+            ${Object.keys(cursos2).map((key) => {
+                const item = cursos2[key];
                 if (item.asignatura.indexOf(this._selectedAsignatura) != -1){
 	                return html`
 	                    ${Object.keys(item.paralelos).map((idies) => {
