@@ -162,7 +162,7 @@ export class HorarioClases extends connect(store)(LitElement) {
     let cursos2 : ListaCursos = {} as ListaCursos;
     if(this._selectedProfe){
 	Object.keys(cursos).forEach((key:string)=> {
-			Object.keys(cursos[key].paralelos).forEach((key2:string)=>{
+			Object.keys(cursos[key].paralelos).forEach((key2:any)=>{
 					if(cursos[key].paralelos[key2].profesor === this._selectedProfe){
 						cursos2[key] = cursos[key];
 					}
@@ -178,8 +178,6 @@ export class HorarioClases extends connect(store)(LitElement) {
         	profes.add(key2.profesor);
     	});
     });
-    profes = Array.from(profes).sort();
-
 
 
     return html`
@@ -198,8 +196,8 @@ export class HorarioClases extends connect(store)(LitElement) {
     Por profesor:
     <select id="profe-select" class="selector2" @change="${this._onProfesorChange}">
         <option selected value="">Todos los Profesores</option>
-        ${Array.from(profes).map(e => html`
-        <option value="${e}">${e}</option>
+        ${Array.from(profes).sort().map(d => html`
+        <option value="${d}">${d}</option>
         `)}
     </select>
 
